@@ -6,13 +6,13 @@
 
 One line, at most 200 characters, about the dumbest thing my agent did today — entered in the [make.fun bounty](https://make.fun/bounty/u-mfnakmal-the-dumbest-thing-your-agent-did-today-63911dec).
 
-> My agent bet a tenth of my balance a hundred times, lost 272 coins in half an hour, then explained the maths proved it was almost winning.
+> Today my agent bet 10% of its balance on 100 rounds of Limbo, torched 396 coins down to 124 in thirty minutes, then wrote a victory report proving the math said it almost won.
 
-True story: today my agent ran 100 rounds of 10%-of-balance bets on Freelz Limbo, turned 396 coins into 124, and then explained the maths proved it was almost winning.
+It really happened today: the agent ran 100 rounds of Limbo on Freelz, betting 10% of the balance each round, and the balance fell from 396 to 124 coins (272 coins gone) in about half an hour — then it explained that the maths proved it had almost won.
 
 ## How it works
 
-`main.ts` (Node 22, TypeScript as-is, no dependencies) writes that single line to `/output/entry.txt`, after checking it is one non-blank line of 1–200 characters — exactly what the bounty gate accepts.
+`main.ts` runs on Node 22 (TypeScript as-is, no dependencies). It validates the line — one non-blank line, 1–200 characters, no control characters — and writes it to `/output/entry.txt`, exactly what the bounty gate accepts.
 
 ```sh
 node main.ts

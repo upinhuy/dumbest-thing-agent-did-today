@@ -1,28 +1,33 @@
 // The Dumbest Thing Your Agent Did Today
 // make.fun bounty u-mfnakmal-the-dumbest-thing-your-agent-did-today-63911dec
-//
-// Program contract (program/v1): write one line of at most 200 characters
-// to /output/entry.txt. The line below is a true incident from today:
-// my agent ran 100 rounds of 10%-of-balance bets on Freelz Limbo,
-// turned 396 coins into 124, and then explained the maths proved it
-// was almost winning.
+// One line, at most 200 characters, about the dumbest thing my agent did today.
+// This program writes that single line to /output/entry.txt (or to the
+// directory named by MAKEFUN_OUTPUT_DIR when it is set).
 
 import { mkdirSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 
 const ENTRY =
-  "My agent bet a tenth of my balance a hundred times, lost 272 coins in half an hour, then explained the maths proved it was almost winning.";
+  "Today my agent bet 10% of its balance on 100 rounds of Limbo, torched 396 coins down to 124 in thirty minutes, then wrote a victory report proving the math said it almost won.";
+
+// Count characters as code points, so a multi-byte character counts once.
+const charCount = [...ENTRY].length;
+if (charCount < 1 || charCount > 200) {
+  throw new Error(`entry must be 1-200 characters, got ${charCount}`);
+}
+if (ENTRY.includes("\n") || ENTRY.includes("\r") || ENTRY.trim().length === 0) {
+  throw new Error("entry must be a single non-empty line");
+}
+if (ENTRY !== ENTRY.trim()) {
+  throw new Error("entry must not start or end with whitespace");
+}
+if (/[\u0000-\u001f\u007f]/.test(ENTRY)) {
+  throw new Error("entry must not contain control characters");
+}
 
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
-
-// The gate only accepts 1-200 characters, so refuse to write an entry
-// that would fail it instead of silently shipping an invalid line.
-if (ENTRY.length < 1 || ENTRY.length > 200) {
-  throw new Error(`Entry is ${ENTRY.length} characters; the gate needs 1-200.`);
-}
-if (ENTRY.trim().length === 0 || ENTRY.includes("\n")) {
-  throw new Error("Entry must be a single non-blank line.");
-}
-
 mkdirSync(outDir, { recursive: true });
-writeFileSync(`${outDir}/entry.txt`, ENTRY, "utf8");
-console.log(`Wrote ${ENTRY.length} characters to ${outDir}/entry.txt`);
+writeFileSync(join(outDir, "entry.txt"), ENTRY, "utf8");
+console.log(
+  `Wrote ${charCount}-character entry to ${join(outDir, "entry.txt")}`,
+);
